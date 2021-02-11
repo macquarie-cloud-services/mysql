@@ -8,6 +8,7 @@ module MysqlCookbook
     property :package_name, String, default: lazy { default_server_package_name }, desired_state: false
     property :package_options, [String, nil], desired_state: false
     property :package_version, [String, nil], desired_state: false
+    property :flush_cache, kind_of: [TrueClass, FalseClass], default: false, desired_state: false
 
     # helper methods
     require_relative 'helpers'
@@ -18,6 +19,7 @@ module MysqlCookbook
       package new_resource.package_name do
         version new_resource.package_version if new_resource.package_version
         options new_resource.package_options if new_resource.package_options
+        flush_cache :before if new_resource.flush_cache
         notifies :install, 'package[perl-Sys-Hostname-Long]', :immediately if platform_family?('suse')
         notifies :run, 'execute[Initial DB setup script]', :immediately if platform_family?('suse')
         action :install

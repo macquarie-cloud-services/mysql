@@ -14,6 +14,7 @@ module MysqlCookbook
     property :package_name, String, default: lazy { default_package_name }, desired_state: false
     property :package_options, [String, nil], desired_state: false
     property :package_version, [String, nil], desired_state: false
+    property :flush_cache, kind_of: [TrueClass, FalseClass], default: false, desired_state: false
 
     ################
     # Helper Methods
